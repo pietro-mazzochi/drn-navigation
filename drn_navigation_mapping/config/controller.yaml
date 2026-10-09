@@ -1,0 +1,158 @@
+controller_server:
+  ros__parameters:
+    use_sim_time: False
+    time_to_wait: 15.0
+    # controller_frequency: 20.0
+    controller_frequency: 10.0
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.01
+    min_theta_velocity_threshold: 0.001
+    speed_limit_topic: "/speed_limit"
+    failure_tolerance: 0.25
+    progress_checker_plugin: "progress_checker"
+    goal_checker_plugins: ["general_goal_checker","docking_gral_goal_checker"] 
+    controller_plugins: ["FollowPath","DockingFollowPath"]
+    # Progress checker parameters
+    progress_checker:
+      plugin: "nav2_controller::SimpleProgressChecker"
+      required_movement_radius: 0.5
+      movement_time_allowance: 1500.0
+    # Goal checker parameters
+    general_goal_checker:
+      stateful: True
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.25 #angulo final
+    docking_gral_goal_checker:
+      stateful: True
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.1
+      yaw_goal_tolerance: 0.01 #angulo final
+    # DWB parameters
+    FollowPath:
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+      desired_linear_vel: 0.25
+      controller_patience: 15.0
+      lookahead_dist: 1.2
+      lookahead_dist: 1.2
+      min_lookahead_dist: 0.3
+      max_lookahead_dist: 0.9
+      max_lookahead_dist: 0.9
+      lookahead_time: 1.0 #Afeta o quanto o robô olha para um ponto um pouco mais à frente
+      rotate_to_heading_angular_vel: 0.1  #melhora a precisa do alinhamento inicial com a curva #reduzi esse valor 
+      rotate_to_heading_angular_vel: 0.1  #melhora a precisa do alinhamento inicial com a curva #reduzi esse valor 
+      transform_tolerance: 1.0
+      use_velocity_scaled_lookahead_dist: true #a distância de lookahead é calculada dinamicamente com base na velocidade linear atual do robô e no lookahead_time
+      min_approach_linear_velocity: 0.1
+      use_velocity_scaled_lookahead_dist: true #a distância de lookahead é calculada dinamicamente com base na velocidade linear atual do robô e no lookahead_time
+      min_approach_linear_velocity: 0.1
+      approach_velocity_scaling_dist: 1.0
+      use_collision_detection: false
+      max_allowed_time_to_collision_up_to_carrot: 10.0
+      use_regulated_linear_velocity_scaling: true #afeta pois está relacionada as curvaturas
+      use_cost_regulated_linear_velocity_scaling: true
+      regulated_linear_scaling_min_radius: 0.8 #muito importante para definir a curvatura  (desacelera mais cedo prox de curvas)
+      regulated_linear_scaling_min_speed: 0.12
+      regulated_linear_scaling_min_speed: 0.12
+      use_fixed_curvature_lookahead: false
+      use_approach_linear_velocity_scaling: true
+      max_allowed_time_to_collision: 1.0
+      curvature_lookahead_dist: 0.25 #O robÔ reage mais rapidamente às mudanças de curvatura
+      use_rotate_to_heading: false
+      rotate_to_heading_min_angle: 0.10 #diminui o valor para 30 graus para que o robô comece a se orientar para a curva um pouco antes
+      use_cancel_deceleration: false
+      cancel_deceleration: 3.2
+      max_angular_accel: 0.25
+      max_robot_pose_search_dist: 5.0
+      interpolate_curvature_after_goal: true
+      cost_scaling_dist: 0.3
+      cost_scaling_gain: 0.5
+      inflation_cost_scaling_factor: 0.5
+      cost_scaling_gain: 0.5
+      inflation_cost_scaling_factor: 0.5
+      allow_reversing: true
+      regulate_turning_speed: false
+    DockingFollowPath:
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+      desired_linear_vel: 0.15
+      lookahead_dist: 0.4 #0.6
+      min_lookahead_dist: 0.3
+      max_lookahead_dist: 0.9
+      lookahead_time: 1.0 #1.5 #Afeta o quanto o robô olha para um ponto um pouco mais à frente
+      rotate_to_heading_angular_vel: 0.10 #0.25  #melhora a precisa do alinhamento inicial com a curva #reduzi esse valor 
+      transform_tolerance: 0.1
+      use_velocity_scaled_lookahead_dist: true #a distância de lookahead é calculada dinamicamente com base na velocidade linear atual do robô e no lookahead_time
+      min_approach_linear_velocity: 0.1
+      approach_velocity_scaling_dist: 1.0
+      use_collision_detection: false
+      max_allowed_time_to_collision_up_to_carrot: 1.0
+      use_regulated_linear_velocity_scaling: true #afeta pois está relacionada as curvaturas
+      use_cost_regulated_linear_velocity_scaling: false
+      regulated_linear_scaling_min_radius: 0.8 #muito importante para definir a curvatura  (desacelera mais cedo prox de curvas)
+      regulated_linear_scaling_min_speed: -0.2
+      use_fixed_curvature_lookahead: false
+      use_approach_linear_velocity_scaling: true
+      max_allowed_time_to_collision: 1.0
+      curvature_lookahead_dist: 0.3 #0.6 #O robÔ reage mais rapidamente às mudanças de curvatura
+      use_rotate_to_heading: true
+      rotate_to_heading_min_angle: 0.35 #0.52 #diminui o valor para 30 graus para que o robô comece a se orientar para a curva um pouco antes
+      use_cancel_deceleration: false
+      cancel_deceleration: 3.2
+      max_angular_accel: 0.25
+      max_robot_pose_search_dist: 10.0
+      interpolate_curvature_after_goal: false
+      cost_scaling_dist: 0.3
+      cost_scaling_gain: 1.0
+      inflation_cost_scaling_factor: 0.5
+      allow_reversing: true
+
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      update_frequency: 10.0
+      publish_frequency: 1.0
+      global_frame: map
+      robot_base_frame: base_footprint
+      use_sim_time: False
+      rolling_window: true
+      width: 10
+      height: 10
+      resolution: 0.05
+      footprint: '[ [1.0, 0.7], [1.0, -0.7], [-1.0, -0.7], [-1.0, 0.7] ]'
+      plugins: ["voxel_layer", "inflation_layer"]
+      filters: ["keepout_filter","inflation_layer"]
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 50.0
+        inflation_radius: 1.5
+      voxel_layer: #para objetos de 3D 
+        plugin: "nav2_costmap_2d::VoxelLayer"
+        enabled: True
+        publish_voxel_map: True
+        origin_z: 0.0
+        z_resolution: 0.05
+        z_voxels: 16
+        max_obstacle_height: 2.0
+        mark_threshold: 0
+        observation_sources: scan
+        scan:
+          topic: /scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+          raytrace_max_range: 10.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 10.0
+          obstacle_min_range: 0.0
+      static_layer:
+        map_subscribe_transient_local: True
+      keepout_filter:
+        plugin: "nav2_costmap_2d::KeepoutFilter"
+        enabled: True
+        filter_info_topic: "/costmap_filter_info"
+      speed_filter:
+        plugin: "nav2_costmap_2d::SpeedFilter"
+        enabled: True
+        filter_info_topic: "/costmap_filter_speeds_info_server"
+      always_send_full_costmap: True

@@ -1,0 +1,12 @@
+#Goals
+float64 distance_seg
+float64 linear_tolerance
+float64 angular_tolerance
+string direction
+---
+#Result
+bool success
+---
+#feedback
+float64 current_error_x
+float64 current_error_yaw

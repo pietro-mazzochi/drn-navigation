@@ -1,0 +1,9 @@
+.vscode/*
+*/__pycache__/*
+*.pyc
+*.mp4
+*.pyc
+*.jpg
+*.png
+*.csv
+*/build/
