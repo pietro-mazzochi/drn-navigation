@@ -1,8 +1,0 @@
-Edge[] blocked_paths
-geometry_msgs/PoseStamped robot_pose
-int64 id_target
-string direction
----
-geometry_msgs/PoseStamped[] path
-Edge[] relative_edges
-bool dock_robot
